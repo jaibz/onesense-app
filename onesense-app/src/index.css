@@ -1,0 +1,45 @@
+@font-face {
+  font-family: 'InterVar';
+  src: url('InterVariable.woff2') format('woff2-variations');
+  /* font-weight: 70 400; */
+  /* font-stretch: 100% 125%; */
+}
+
+body {
+  margin: 0;
+  font-family: 'InterVar', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000000; /* Light gray background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}
+
+button {
+  font-family: 'InterVar', sans-serif;
+  padding: 10px 20px;
+  font-size: 25px;
+  font-weight: bold;
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  width: 300px;
+  background-color: #000000; /* Bootstrap primary color */
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  display: block;
+  margin: 20px 0; /* Added margin to separate buttons */
+}
+
+button:hover {
+  background-color: #ffffff; /* Darker shade of primary color */
+  color: #000000;
+}
+
+button:active {
+  background-color: #ffffff; /* Same as hover color */
+  transform: scale(0.95); /* Slight scale down on click */
+  color: #000000;
+}
