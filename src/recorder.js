@@ -1,4 +1,7 @@
 import React, { useState, useRef } from 'react';
+import { storage, firestore } from './firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { collection, addDoc } from 'firebase/firestore';
 
 const Recorder = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -20,6 +23,7 @@ const Recorder = () => {
           const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp3' });
           const url = URL.createObjectURL(audioBlob);
           setAudioUrl(url);
+          console.log('Audio blob created:', audioBlob);
           uploadAudio(audioBlob);
           setTranscription("Processing transcription...");
         };
@@ -38,28 +42,30 @@ const Recorder = () => {
     setIsRecording(false);
   };
 
-  const uploadAudio = (audioBlob) => {
-    const formData = new FormData();
-    formData.append('audio', audioBlob, 'recorded_audio.mp3');
-
-    fetch('your-api-endpoint', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to upload audio');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Audio uploaded successfully:', data);
-      setTranscription(data.transcription || "Transcription failed");
-    })
-    .catch(error => {
+  const uploadAudio = async (audioBlob) => {
+    try {
+      const storageRef = ref(storage, `audio/${new Date().toISOString()}.mp4`);
+      
+      const snapshot = await uploadBytes(storageRef, audioBlob);
+      
+      const url = await getDownloadURL(snapshot.ref);
+      
+      // Save URL to Firestore collection
+      const docRef = await addDoc(collection(firestore, 'audio_file'), {
+        audio_file_url: url,
+        timestamp: new Date()
+      });
+      
+      setTranscription("Audio uploaded successfully");
+    } catch (error) {
       console.error('Error uploading audio:', error);
       setTranscription("Transcription failed");
-    });
+  
+      // Handle specific error cases if needed
+      if (error.code === 'storage/unknown') {
+        console.error('Unknown error occurred during upload.');
+      }
+    }
   };
 
   return (
