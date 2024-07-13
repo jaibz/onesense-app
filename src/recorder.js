@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { storage, firestore } from './firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, doc, setDoc } from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
 
 const Recorder = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -44,16 +45,20 @@ const Recorder = () => {
 
   const uploadAudio = async (audioBlob) => {
     try {
-      const storageRef = ref(storage, `audio/${new Date().toISOString()}.mp4`);
+      const uuid = uuidv4(); // Generate UUID
+      
+      const storageRef = ref(storage, `audio/${uuid}.mp4`);
       
       const snapshot = await uploadBytes(storageRef, audioBlob);
       
       const url = await getDownloadURL(snapshot.ref);
       
-      // Save URL to Firestore collection
-      const docRef = await addDoc(collection(firestore, 'audio_file'), {
+      // Save URL, UUID, and timestamp to Firestore collection with UUID as document ID
+      const docRef = doc(collection(firestore, 'audio_file'), uuid);
+      await setDoc(docRef, {
         audio_file_url: url,
-        timestamp: new Date()
+        timestamp: new Date(), // Add the timestamp
+        is_processed: false
       });
       
       setTranscription("Audio uploaded successfully");
