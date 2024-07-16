@@ -1,15 +1,50 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { storage, firestore } from './firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { collection, doc, setDoc, onSnapshot, getDocs } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 
 const Recorder = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState(null);
-  const [transcription, setTranscription] = useState("Structured Information");
+  const [transcription, setTranscription] = useState("Structured information will appear here.");
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
+  const [uuid, setUuid] = useState(null);
+  const [whisperPublicUrl, setWhisperPublicUrl] = useState(null); // State to hold whisper public URL
+
+  useEffect(() => {
+    fetchWhisperPublicUrl();
+  }, []);
+
+  const fetchWhisperPublicUrl = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(firestore, 'whisper_dynamic_url'));
+      querySnapshot.forEach((doc) => {
+        const url = doc.data().whisper_public_url;
+        setWhisperPublicUrl(url);
+      });
+    } catch (error) {
+      console.error('Error fetching whisper public URL:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (uuid) {
+      // Start listening to the document for updates
+      const docRef = doc(firestore, 'processed_data', uuid);
+      const unsubscribe = onSnapshot(docRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const data = docSnapshot.data();
+          if (data && data.transcription) {
+            setTranscription(data.transcription);
+          }
+        }
+      });
+
+      return () => unsubscribe(); // Clean up the listener on unmount
+    }
+  }, [uuid]);
 
   const startRecording = () => {
     navigator.mediaDevices.getUserMedia({ audio: true })
@@ -21,11 +56,11 @@ const Recorder = () => {
         };
 
         mediaRecorderRef.current.onstop = () => {
-          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp3' });
+          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp4' });
           const url = URL.createObjectURL(audioBlob);
           setAudioUrl(url);
-          console.log('Audio blob created:', audioBlob);
           uploadAudio(audioBlob);
+          makePostRequest();
           setTranscription("Processing transcription...");
         };
 
@@ -45,23 +80,24 @@ const Recorder = () => {
 
   const uploadAudio = async (audioBlob) => {
     try {
-      const uuid = uuidv4(); // Generate UUID
+      const newUuid = uuidv4(); // Generate UUID
+      setUuid(newUuid); // Set UUID in state
       
-      const storageRef = ref(storage, `audio/${uuid}.mp4`);
-      
+      const storageRef = ref(storage, `audio/${newUuid}.mp4`);
       const snapshot = await uploadBytes(storageRef, audioBlob);
-      
       const url = await getDownloadURL(snapshot.ref);
       
       // Save URL, UUID, and timestamp to Firestore collection with UUID as document ID
-      const docRef = doc(collection(firestore, 'audio_file'), uuid);
+      const docRef = doc(collection(firestore, 'audio_file'), newUuid);
       await setDoc(docRef, {
         audio_file_url: url,
         timestamp: new Date(), // Add the timestamp
         is_processed: false
       });
+
+      // After upload, proceed to make POST request with whisperPublicUrl
+      makePostRequest(newUuid);
       
-      setTranscription("Audio uploaded successfully");
     } catch (error) {
       console.error('Error uploading audio:', error);
       setTranscription("Transcription failed");
@@ -70,6 +106,33 @@ const Recorder = () => {
       if (error.code === 'storage/unknown') {
         console.error('Unknown error occurred during upload.');
       }
+    }
+  };
+
+  const makePostRequest = async () => {
+    try {
+      if (!whisperPublicUrl) {
+        console.error('No whisper public URL found.');
+        return;
+      }
+
+      const postUrl = `${whisperPublicUrl}/process/whisper`;
+      const response = await fetch(postUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: ({})
+      });
+
+      if (response.ok) {
+        console.log(`POST request to ${postUrl} was successful.`);
+      } else {
+        console.error(`Failed to make POST request to ${postUrl}. Status code: ${response.status}`);
+      }
+      
+    } catch (error) {
+      console.error('Error making POST request:', error);
     }
   };
 
