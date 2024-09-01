@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import './recorder.css';  // Import the new CSS file
 import { storage, firestore } from './firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, doc, setDoc, onSnapshot, getDocs } from 'firebase/firestore';
@@ -11,7 +12,7 @@ const Recorder = () => {
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const [uuid, setUuid] = useState(null);
-  const [whisperPublicUrl, setWhisperPublicUrl] = useState(null); // State to hold whisper public URL
+  const [whisperPublicUrl, setWhisperPublicUrl] = useState(null);
 
   useEffect(() => {
     fetchWhisperPublicUrl();
@@ -65,8 +66,6 @@ const Recorder = () => {
             console.log('Formatted response:', formattedResponse);
             setTranscription(formattedResponse);
           }
-        } else {
-          console.log(`Document with UUID ${uuid} does not exist.`);
         }
       });
   
@@ -89,7 +88,7 @@ const Recorder = () => {
         };
 
         mediaRecorderRef.current.onstop = () => {
-          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp4' });
+          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
           const url = URL.createObjectURL(audioBlob);
           setAudioUrl(url);
           uploadAudio(audioBlob);
@@ -112,29 +111,26 @@ const Recorder = () => {
 
   const uploadAudio = async (audioBlob) => {
     try {
-      const newUuid = uuidv4(); // Generate UUID
-      setUuid(newUuid); // Set UUID in state
+      const newUuid = uuidv4();
+      setUuid(newUuid);
       
-      const storageRef = ref(storage, `audio/${newUuid}.mp4`);
+      const storageRef = ref(storage, `audio/${newUuid}.wav`);
       const snapshot = await uploadBytes(storageRef, audioBlob);
       const url = await getDownloadURL(snapshot.ref);
       
-      // Save URL, UUID, and timestamp to Firestore collection with UUID as document ID
       const docRef = doc(collection(firestore, 'audio_file'), newUuid);
       await setDoc(docRef, {
         audio_file_url: url,
-        timestamp: new Date(), // Add the timestamp
+        timestamp: new Date(),
         is_processed: false
       });
 
-      // After upload, proceed to make POST request with whisperPublicUrl
       await makePostRequest(newUuid);
       
     } catch (error) {
       console.error('Error uploading audio:', error);
       setTranscription("Transcription failed");
   
-      // Handle specific error cases if needed
       if (error.code === 'storage/unknown') {
         console.error('Unknown error occurred during upload.');
       }
