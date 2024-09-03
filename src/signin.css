@@ -197,12 +197,12 @@ p a:hover {
 
 .footer-links {
     margin-top: 20px;
-    font-size: 12px;
+    font-size: 14px;
     color: #888;
 }
 
 .footer-links a {
-    color: #565add; /* Purple */
+    color: #565add;
     text-decoration: none;
     margin: 0 5px;
 }
@@ -227,7 +227,6 @@ p a:hover {
     }
 
     h1 {
-        font-size: 24px;
         padding-right: 10px;
         padding-left: 10px;
     }
@@ -237,13 +236,6 @@ p a:hover {
     }
 
     .divider span {
-        font-size: 10px;
         padding: 0 5px;
-    }
-
-    .google-button::before {
-        width: 16px;
-        height: 16px;
-        margin-right: 5px;
     }
 }
