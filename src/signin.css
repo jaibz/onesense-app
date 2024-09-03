@@ -39,6 +39,10 @@
     align-items: center;
 }
 
+.signin-form > *:last-child {
+    margin-bottom: 0;
+}
+
 h1 {
     margin-bottom: 32px;
     color: #333;
@@ -127,8 +131,6 @@ h1 {
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 20px;
-    margin-top: 20px;
     font-weight: 400;
 }
 
@@ -136,10 +138,15 @@ h1 {
     color: white;
     background-color: #565add;
     border: none;
+    margin: 20px 0;
 }
 
 .continue-button:hover {
     background-color: #4a4ba6;
+}
+
+p {
+    margin-bottom: 0px;
 }
 
 .google-button {
@@ -169,7 +176,7 @@ h1 {
     display: flex;
     align-items: center;
     width: 100%;
-    margin: 20px 0;
+    margin: 43px 0;
 }
 
 .divider::before,
