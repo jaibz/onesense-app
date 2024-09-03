@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'InterVar';
+    src: url('InterVariable.woff2') format('woff2-variations');
+}  
+
 body {
     margin: 0;
     font-family: 'InterVar', sans-serif;
@@ -41,7 +46,7 @@ h1 {
     font-family: 'InterVar', sans-serif;
     color: #333;
     width: 100%;
-    padding: 12px 10px;
+    padding: 15px 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
@@ -52,8 +57,9 @@ h1 {
 
 .input-group label {
     position: absolute;
-    top: 14px;
+    top: 50%;
     left: 10px;
+    transform: translateY(-50%);
     font-size: 16px;
     color: #888;
     transition: 0.2s ease all;
@@ -70,8 +76,8 @@ h1 {
 
 .input-group input:focus + label,
 .input-group input.filled + label {
-    top: -12px;
-    left: 10px;
+    top: 0;
+    transform: translateY(-50%);
     font-size: 12px;
     color: #565add;
 }
@@ -113,12 +119,13 @@ h1 {
 
 .continue-button, .google-button {
     width: 100%;
-    padding: 12px;
+    padding: 15px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
     box-sizing: border-box;
     margin-top: 20px;
+    font-weight: 400;
 }
 
 .continue-button {
@@ -214,16 +221,14 @@ p a:hover {
 @media (max-width: 600px) {
     body {
         background-color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+        min-height: 100vh;
     }
     
     .login-container {
         padding: 20px;
-        width: 320px;
+        width: 400px;
         box-shadow: none;
+        box-sizing: border-box;
     }
 
     h1 {
