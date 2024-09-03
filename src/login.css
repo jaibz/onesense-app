@@ -25,7 +25,7 @@
 .login-container {
     background-color: white;
     padding: 50px;
-    padding-top: 30px;
+    padding-top: 43px;
     border-radius: 15px;
     box-shadow: 0 0 15px 1px rgba(0,0,0,0.1);
     width: 100%;
@@ -37,6 +37,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.login-form > *:first-child {
+    margin-top: 0;
 }
 
 .login-form > *:last-child {
