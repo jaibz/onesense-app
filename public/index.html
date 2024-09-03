@@ -10,6 +10,17 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="preload" href="/src/InterVariable.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <title>OneSense App</title>
+    <style>
+      @font-face {
+        font-family: 'Inter';
+        src: url('/src/InterVariable.woff2') format('woff2-variations');
+        font-weight: 400 700;
+        font-display: block;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
