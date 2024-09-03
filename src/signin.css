@@ -1,6 +1,8 @@
 @font-face {
     font-family: 'InterVar';
     src: url('InterVariable.woff2') format('woff2-variations');
+    font-weight: 400 700;
+    font-display: block;
 }  
 
 body {
