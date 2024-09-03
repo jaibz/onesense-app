@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import './index.css';
+import './App.css';
 import './login.css';
 import logo from './logo.svg';
 

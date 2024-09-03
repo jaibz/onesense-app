@@ -6,7 +6,7 @@
     min-height: 100vh;
     padding: 20px 0;
     box-sizing: border-box;
-    width: 100%;
+    width: 350px;
 }
 
 .logo-container {
@@ -219,7 +219,7 @@ h1 {
     
     .page-container {
         width: 100vw;
-        max-width: 350px;
+        max-width: 400px;
     }
 
     .login-container {
