@@ -224,7 +224,7 @@ h1 {
 .footer-links {
     font-size: 14px;
     color: #888;
-    margin: 35px 0;
+    margin: 37px 0;
 }
 
 .footer-links a {
@@ -256,8 +256,7 @@ h1 {
     }
 
     .login-container {
-        padding: 20px;
-        padding-top: 0;
+        padding: 0 20px;
         width: 100%;
         max-width: none;
         box-shadow: none;
