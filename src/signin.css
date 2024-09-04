@@ -12,7 +12,6 @@ body {
     position: absolute;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
     min-height: 100vh;
     top: 0;
@@ -250,6 +249,10 @@ h1 {
         min-height: 100vh;
     }
     
+    .logo-container {
+        margin-bottom: 68px;
+    }
+
     .page-container {
         width: 100vw;
         max-width: 370px;
@@ -271,5 +274,9 @@ h1 {
 
     .divider span {
         padding: 0 5px;
+    }
+
+    .footer-links {
+        margin-top: 70px;
     }
 }
