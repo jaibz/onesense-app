@@ -18,7 +18,7 @@ body {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 350px;
+    width: 320px;
     box-sizing: border-box;
 }
 
@@ -42,7 +42,6 @@ body {
     border-radius: 15px;
     box-shadow: 0 0 15px 1px rgba(0,0,0,0.1);
     width: 100%;
-    max-width: 400px;
     margin: auto 0;
 }
 
@@ -253,7 +252,7 @@ h1 {
     
     .page-container {
         width: 100vw;
-        max-width: 400px;
+        max-width: 370px;
     }
 
     .signin-container {
