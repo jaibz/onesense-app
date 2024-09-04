@@ -26,7 +26,7 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin: 35px 0;
+    margin: 20px 0;
 }
 
 .logo {
@@ -224,7 +224,7 @@ h1 {
 .footer-links {
     font-size: 14px;
     color: #888;
-    margin: 35px 0;
+    margin: 20px 0;
 }
 
 .footer-links a {
