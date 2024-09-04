@@ -14,7 +14,7 @@
     display: flex;
     justify-content: center;
     padding: 15px 0;
-    margin-bottom: 15px;
+    margin: 15px 0;
 }
 
 .logo {
@@ -150,8 +150,19 @@ h1 {
     background-color: #4a4ba6;
 }
 
-p {
+.alternative-text{
+    color: #333;
     margin-bottom: 0px;
+    font-size: 14px;
+}
+
+.alternative-link{
+    color: #565add;
+    text-decoration: none;
+}
+
+.alternative-link:hover{
+    text-decoration: underline;
 }
 
 .google-button {
@@ -202,8 +213,7 @@ p {
 .footer-links {
     font-size: 14px;
     color: #888;
-    margin-top: 15px;
-    margin-bottom: 20px;
+    margin: 15px 0;
 }
 
 .footer-links a {

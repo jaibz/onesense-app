@@ -88,8 +88,8 @@ const SignIn = () => {
 
           <button type="submit" className="continue-button">Continue</button>
 
-          <p>
-            Already have an account? <a href="/login">Login</a>
+          <p className="alternative-text">
+            Already have an account? <a className="alternative-link" href="/login">Login</a>
           </p>
 
           <div className="divider">
