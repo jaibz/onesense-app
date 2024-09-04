@@ -1,20 +1,32 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow-y: auto;
+}
+
 .page-container {
+    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     min-height: 100vh;
-    padding: 20px 0;
-    box-sizing: border-box;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 350px;
+    box-sizing: border-box;
 }
 
 .logo-container {
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 15px 0;
-    margin: 15px 0;
+    margin: 35px 0;
 }
 
 .logo {
@@ -212,7 +224,7 @@ h1 {
 .footer-links {
     font-size: 14px;
     color: #888;
-    margin: 15px 0;
+    margin: 35px 0;
 }
 
 .footer-links a {
