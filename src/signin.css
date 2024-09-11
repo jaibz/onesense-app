@@ -251,8 +251,8 @@ h1 {
     }
     
     .logo-container {
-        margin-top: 70px;
-        margin-bottom: 68px;
+        /* margin-top: 70px;
+        margin-bottom: 68px; */
     }
 
     .page-container {
@@ -279,6 +279,6 @@ h1 {
     }
 
     .footer-links {
-        margin: 70px;
+        /* margin: 70px; */
     }
 }
